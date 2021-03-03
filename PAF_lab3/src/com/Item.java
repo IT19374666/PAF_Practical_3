@@ -142,7 +142,9 @@ public class Item {
 				output += "Item price: <input name=\"itemPrice\" type=\"text\" value=\""+ itemPrice + "\" class=\"form-control\"><br>";
 				output += "Item description: <input name=\"itemDesc\" type=\"text\" value=\""+ itemDesc + "\" class=\"form-control\"><br>";
 				output += "<input name='itemID' type='hidden' value='" + itemID + "'>";
+
 				output += "<input type=\"submit\" name=\"Update\" value=\"update\" class=\"btn btn-primary\"></form>";
+
 			}
 			
 			con.close();			
