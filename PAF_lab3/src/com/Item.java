@@ -90,13 +90,15 @@ public class Item {
 	 
 				// buttons
 				output += "<td><form method='post' action='items.jsp'>  "
-						+ "<input name='btnUpdate' type='submit' value='Update' >"
+											
+						+ "<input name='btnUpdate' type='submit' value='Update' class=\"btn btn-success\" >"
 						+ "<input name='itemID' type='hidden' value='" + itemID + "'>"
 						
 						+ "</form></td>"
 						+ "<td><form method='post' action='items.jsp'>"
 						+ "<input name='btnRemove' "
-						+ " type='submit' value='Remove'>"
+						+ " type='submit' value='Remove' move' type='submit' value='Remove'\r\n"
+						+ " class='btn btn-danger'>"
 						+ "<input name='itemID' type='hidden' "
 						+ " value='" + itemID + "'>" + "</form></td></tr>";
 			}
@@ -133,13 +135,14 @@ public class Item {
 				String itemDesc = rs.getString("itemDesc");
 				
 				
-				output = "<form method='post' action='items.jsp'>";				
-				output += "Item code: <input name=\"itemCode\" type=\"text\" value=\""+ itemCode + "\"><br>";
-				output += "Item name: <input name=\"itemName\" type=\"text\" value=\""+ itemName + "\"><br>";
-				output += "Item price: <input name=\"itemPrice\" type=\"text\" value=\""+ itemPrice + "\"><br>";
-				output += "Item description: <input name=\"itemDesc\" type=\"text\" value=\""+ itemDesc + "\"><br>";
+				output = "<form method='post' action='items.jsp'>";	
+				output += "<h2>Item ID : " + itemID + "</h2>";
+				output += "Item code: <input name=\"itemCode\" type=\"text\" value=\""+ itemCode + "\" class=\"form-control\"><br>";
+				output += "Item name: <input name=\"itemName\" type=\"text\" value=\""+ itemName + "\" class=\"form-control\"><br>";
+				output += "Item price: <input name=\"itemPrice\" type=\"text\" value=\""+ itemPrice + "\" class=\"form-control\"><br>";
+				output += "Item description: <input name=\"itemDesc\" type=\"text\" value=\""+ itemDesc + "\" class=\"form-control\"><br>";
 				output += "<input name='itemID' type='hidden' value='" + itemID + "'>";
-				output += "<input type=\"submit\" name=\"btnSubmit\" value=\"update\"></form>";
+				output += "<input type=\"submit\" name=\"Update\" value=\"update\" class=\"btn btn-primary\"></form>";
 			}
 			
 			con.close();			
