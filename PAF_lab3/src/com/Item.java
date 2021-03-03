@@ -24,6 +24,7 @@ public class Item {
 		
 	 return con;
 	}
+	
 	//Insert items
 	public String insertItem(String code, String name, String price, String desc) {
 		String output = "";
@@ -54,9 +55,9 @@ public class Item {
 	 	 }
 	 	
 		return output;
-	 	}
+	 }
 
-	
+	//Read all items
 	public String readItems() {
 		String output = "";
 		try {
@@ -88,8 +89,11 @@ public class Item {
 				output += "<td>" + itemDesc + "</td>";
 	 
 				// buttons
-				output += "<td><input name='btnUpdate' "
-						+ " type='button' value='Update'></td>"
+				output += "<td><form method='post' action='items.jsp'>  "
+						+ "<input name='btnUpdate' type='submit' value='Update' >"
+						+ "<input name='itemID' type='hidden' value='" + itemID + "'>"
+						
+						+ "</form></td>"
 						+ "<td><form method='post' action='items.jsp'>"
 						+ "<input name='btnRemove' "
 						+ " type='submit' value='Remove'>"
@@ -98,13 +102,128 @@ public class Item {
 			}
 			con.close();
 			// Complete the html table
+			
 			output += "</table>";
 		} catch (Exception e) {
 			output = "Error while reading the items.";
 			System.err.println(e.getMessage());
 		}
-	return output;
+		return output;
 	}
+	
+	//select one item
+	public String getItem(int itemID) {
+		String output = "";
+		
+		try {
+			Connection con = this.connect();
+			if (con == null) {
+				return "Error while connecting to get item for update";
+			}		
+			
+			String query = "select * from items where itemID = ?";
+			PreparedStatement preparedStatement = con.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			if (rs.next()) {				
+				String itemCode = rs.getString("itemCode");
+				String itemName = rs.getString("itemName");
+				String itemPrice = rs.getString("itemPrice");
+				String itemDesc = rs.getString("itemDesc");
+				
+				
+				output = "<form method='post' action='items.jsp'>";				
+				output += "Item code: <input name=\"itemCode\" type=\"text\" value=\""+ itemCode + "\"><br>";
+				output += "Item name: <input name=\"itemName\" type=\"text\" value=\""+ itemName + "\"><br>";
+				output += "Item price: <input name=\"itemPrice\" type=\"text\" value=\""+ itemPrice + "\"><br>";
+				output += "Item description: <input name=\"itemDesc\" type=\"text\" value=\""+ itemDesc + "\"><br>";
+				output += "<input name='itemID' type='hidden' value='" + itemID + "'>";
+				output += "<input type=\"submit\" name=\"btnSubmit\" value=\"update\"></form>";
+			}
+			
+			con.close();			
+			
+		} catch (Exception e) {
+			output = "Error while getting item ";
+			System.err.println(e.getMessage());
+		}
+		
+		return output;
+	}
+	
+	//Update item details
+	public String updateItems(String id,String code, String name, String price, String desc) {
+		String output = "";
+		
+		
+		
+		try {
+			Connection con = connect();
+			if (con == null){
+				return "Error while connecting to the database";
+			}
+			// create a prepared statement
+			String query = "update items set itemCode=?,itemName =?,itemPrice=?,itemDesc=? where itemID = ?";		
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			// binding values
+			
+			preparedStmt.setString(1, code);
+			preparedStmt.setString(2, name);
+			preparedStmt.setDouble(3, Double.parseDouble(price));
+			preparedStmt.setString(4, desc); 
+			preparedStmt.setInt(5, Integer.parseInt(id));
+
+			//execute the statement
+			preparedStmt.executeUpdate();
+			con.close();
+			output = "Updated successfully";
+		}catch (Exception e) {
+			output = "Error while updating";
+			System.err.println(e.getMessage());
+	 	}
+	 	
+		return output;
+		
+		
+	}
+	
+	//Delete an item
+	public String deleteItem (String itemId) {
+		
+		int itemID = Integer.parseInt(itemId);
+		String output = "";
+		
+		try {
+			
+			Connection con = connect();
+			
+			if (con == null)
+			{
+				return "Error while connecting to the database";
+			}
+	
+			// create a prepared statement		
+			String query = "delete from items where itemID = ?" ;							
+			PreparedStatement preparedStmt = con.prepareStatement(query);
+			
+			// binding the value of itemID
+			preparedStmt.setInt(1, itemID);
+	
+			//execute the statement
+			preparedStmt.execute();
+			con.close();
+			output = "Item id = " + itemID + " deleted successfully";
+		} catch (Exception e)
+		{
+			output = "Error while inserting";
+			System.out.println(itemID);
+			System.err.println(e.getMessage());
+		}
+		return output;
+
+	}		
+			
 	
 	
 	
